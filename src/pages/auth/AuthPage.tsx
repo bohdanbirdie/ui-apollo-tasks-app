@@ -35,7 +35,7 @@ const tabList = [
 ];
 
 export const AuthPage = () => {
-  const { data } = useGetSessionQuery();
+  const { data, client } = useGetSessionQuery();
   const history = useHistory();
   const [loginMutation] = useLoginMutation();
   const [signupMutation] = useSignupMutation();
@@ -51,6 +51,7 @@ export const AuthPage = () => {
     if (data?.session) {
       history.replace("/");
     }
+    client.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

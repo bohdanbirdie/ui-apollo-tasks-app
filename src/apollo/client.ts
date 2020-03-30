@@ -1,7 +1,10 @@
+import { LOGOUT } from './../graphql/client/cache';
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
+import { onError } from "apollo-link-error";
+import { ApolloLink } from 'apollo-link';
 
 import { SyncStorage } from "../services/SyncStorage";
 import { SessionMutations } from "../graphql/client/cache";
@@ -25,8 +28,20 @@ const authLink = setContext((_, { headers }) => ({
   }
 }));
 
+const errorLink = onError(({ networkError, graphQLErrors = [], operation }) =>{
+  const { response } = operation.getContext()
+
+  const unauthorized = graphQLErrors.find((error) => {
+    return error?.extensions?.exception?.response?.statusCode === 401;
+  })
+
+  if (response.status === 401 || unauthorized) {
+    client.mutate({ mutation: LOGOUT })
+  }
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
   cache,
   resolvers: {
     Mutation: {

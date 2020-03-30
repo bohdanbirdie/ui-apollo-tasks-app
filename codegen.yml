@@ -11,3 +11,4 @@ generates:
     config:
       withHooks: true
       withMutationFn: true
+      declarationKind: 'interface'

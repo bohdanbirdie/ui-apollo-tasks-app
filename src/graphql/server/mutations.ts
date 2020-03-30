@@ -19,3 +19,17 @@ export const SIGNUP = gql`
     }
   }
 `;
+
+export const CREATE_TASK = gql`
+  mutation CreateTask($newTaskData: NewTaskInput!) {
+    addTask(newTaskData: $newTaskData) {
+      id
+      title
+      description
+      author {
+        id
+        username
+      }
+    }
+  }
+`;

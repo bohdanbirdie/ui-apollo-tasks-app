@@ -23,14 +23,16 @@ export const SessionMutations: Record<string, Resolver> = {
         cache.writeData({
             data: { session: access_token }
         });
-        SyncStorage.saveToken(access_token);        
+        SyncStorage.saveToken(access_token);
 
         return null;
     },
     logout: async () => {
         SyncStorage.deleteToken();
+        // client.stop()
         await client.resetStore()
-        console.log('logout')
+        // eslint-disable-next-line no-restricted-globals
+        // history.go('/auth');
 
         return null;
     }

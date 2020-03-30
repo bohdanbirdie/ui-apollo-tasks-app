@@ -1,11 +1,12 @@
 import React, { ReactElement, ComponentType } from "react";
-import { Layout as AntdLayout, Menu, Button, Row, Col } from "antd";
+import { Layout as AntdLayout, Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 
 import "./Layout.css";
 import { useLogoutMutation } from "../../generated/graphql";
+import { UserHeader } from "../user-header/UserHeader";
 
-const { Header, Content, Footer } = AntdLayout;
+const { Header, Content } = AntdLayout;
 
 export const withLayout = <P extends object>(Component: ComponentType<P>) => (
   props: P
@@ -16,11 +17,11 @@ export const withLayout = <P extends object>(Component: ComponentType<P>) => (
   return (
     <AntdLayout className="layout" style={{ height: "100vh" }}>
       <Header>
-        <div className="logo" />
+        <UserHeader />
         <Menu theme="dark" mode="horizontal" selectedKeys={[location.pathname]}>
           <Menu.Item key="/" style={{ float: "left" }}>
             <NavLink to="/" className="nav-text">
-              Dashboard
+              My tasks
             </NavLink>
           </Menu.Item>
 
@@ -36,9 +37,6 @@ export const withLayout = <P extends object>(Component: ComponentType<P>) => (
           <Component {...props} />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
     </AntdLayout>
   );
 };
