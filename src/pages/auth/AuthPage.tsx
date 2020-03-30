@@ -10,9 +10,15 @@ import {
 } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
-import { useLoginMutation, useSignupMutation, LoginMutationResult, SignupMutationResult, useSetSessionMutation } from "../../generated/graphql";
+import {
+  useLoginMutation,
+  useSignupMutation,
+  LoginMutationResult,
+  SignupMutationResult,
+  useSetSessionMutation,
+  useGetSessionQuery
+} from "../../generated/graphql";
 import { useQueryParams } from "../../hooks/use-query-params";
-import { SyncStorage } from "../../services/SyncStorage";
 import { useHistory } from "react-router-dom";
 
 const { Content } = AntdLayout;
@@ -29,6 +35,7 @@ const tabList = [
 ];
 
 export const AuthPage = () => {
+  const { data } = useGetSessionQuery();
   const history = useHistory();
   const [loginMutation] = useLoginMutation();
   const [signupMutation] = useSignupMutation();
@@ -40,6 +47,11 @@ export const AuthPage = () => {
     if (!getQueryParam("tab", "")) {
       setQueryParam("tab", "login");
     }
+
+    if (data?.session) {
+      history.replace("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const payload = {
@@ -64,25 +76,24 @@ export const AuthPage = () => {
   }) => {
     try {
       const result = await action({
-        variables: { localAuthPayload: { username, password } },
+        variables: { localAuthPayload: { username, password } }
       });
       const data = result.data || {};
       let access_token;
 
-      if ('login' in data) {
+      if ("login" in data) {
         access_token = (result as LoginMutationResult).data?.login.access_token;
       }
 
-      if ('signup' in data) {
-        access_token = (result as SignupMutationResult).data?.signup.access_token;
+      if ("signup" in data) {
+        access_token = (result as SignupMutationResult).data?.signup
+          .access_token;
       }
 
       if (access_token) {
-        SyncStorage.saveToken(access_token);
-        history.replace('/');
-        setSessionMutation({ variables: { access_token }})
+        await setSessionMutation({ variables: { access_token } });
+        history.replace("/");
       }
-      
     } catch (err) {
       console.log(err);
     }

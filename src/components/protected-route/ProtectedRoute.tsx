@@ -1,18 +1,13 @@
 import React from "react";
-import { Redirect, Route, useHistory } from "react-router-dom";
+import { Redirect, Route, useRouteMatch } from "react-router-dom";
 import { useGetSessionQuery } from "../../generated/graphql";
 
-export const ProtectedRoute = ({ children, reverse, ...rest }: any) => {
+export const ProtectedRoute = ({ children, ...rest }: any) => {
   const { data } = useGetSessionQuery();
-  const history = useHistory();
+  const match = useRouteMatch("/auth");
 
-  if (!data?.session) {
+  if (!data?.session && !match) {
     return <Redirect to={{ pathname: "/auth" }} />;
-  }
-
-  if (reverse) {
-    history.goBack();
-    return null;
   }
 
   return <Route {...rest}>{children}</Route>;

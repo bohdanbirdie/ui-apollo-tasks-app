@@ -14,4 +14,8 @@ export abstract class SyncStorage {
 
     return token ? { authorization:`Bearer ${token}`} : {};
   }
+
+  public static deleteToken() {
+    localStorage.removeItem(TOKEN_KEY);
+  }
 }

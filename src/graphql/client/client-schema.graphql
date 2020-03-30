@@ -6,4 +6,5 @@ extend type Query {
 
 extend type Mutation {
     setSession(access_token: String!): Boolean
+    logout(nothing: Boolean): Boolean
 }

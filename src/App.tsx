@@ -4,13 +4,14 @@ import { Switch } from "react-router-dom";
 import { AuthPage } from "./pages/auth/AuthPage";
 import { ProtectedRoute } from "./components/protected-route/ProtectedRoute";
 import { DashboardPage } from "./pages/dashboard/DashboardPage";
+import { LoggedOutOnlyRoute } from "./components/protected-route/LoggedOutOnlyRoute";
 
 function App() {
   return (
     <Switch>
-      <ProtectedRoute path="/auth" exact reverse>
+      <LoggedOutOnlyRoute path="/auth" exact reverse>
         <AuthPage />
-      </ProtectedRoute>
+      </LoggedOutOnlyRoute>
       <ProtectedRoute path="/" exact>
         <DashboardPage />
       </ProtectedRoute>
