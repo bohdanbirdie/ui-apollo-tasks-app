@@ -1,0 +1,9 @@
+directive @client on FIELD
+
+extend type Query {
+    session: String
+}
+
+extend type Mutation {
+    setSession(access_token: String!): Boolean
+}
