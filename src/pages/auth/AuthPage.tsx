@@ -6,7 +6,8 @@ import {
   Layout as AntdLayout,
   Row,
   Col,
-  Card
+  Card,
+  Alert
 } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -37,8 +38,8 @@ const tabList = [
 export const AuthPage = () => {
   const { data, client } = useGetSessionQuery();
   const history = useHistory();
-  const [loginMutation] = useLoginMutation();
-  const [signupMutation] = useSignupMutation();
+  const [loginMutation, { error: loginError }] = useLoginMutation();
+  const [signupMutation, { error: signupError }] = useSignupMutation();
   const [setSessionMutation] = useSetSessionMutation();
   const [getQueryParam, setQueryParam] = useQueryParams();
   const currentTab = getQueryParam("tab", "login");
@@ -111,6 +112,27 @@ export const AuthPage = () => {
               activeTabKey={currentTab}
               onTabChange={key => setQueryParam("tab", key)}
             >
+              {loginError && currentTab === "login" && (
+                <Alert
+                  message="Bad login or password"
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: "20px" }}
+                />
+              )}
+
+              {signupError &&
+                currentTab === "signup" &&
+                signupError.graphQLErrors.map(err => (
+                  <Alert
+                    key={err.message}
+                    message={err.message}
+                    type="error"
+                    showIcon
+                    style={{ marginBottom: "20px" }}
+                  />
+                ))}
+
               <Form
                 name="normal_login"
                 className="login-form"

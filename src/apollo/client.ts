@@ -35,8 +35,8 @@ const errorLink = onError(({ networkError, graphQLErrors = [], operation }) =>{
     return error?.extensions?.exception?.response?.statusCode === 401;
   })
 
-  if (response.status === 401 || unauthorized) {
-    client.mutate({ mutation: LOGOUT })
+  if (response?.status === 401 || unauthorized) {
+    client.mutate({ mutation: LOGOUT }).catch()
   }
 });
 
