@@ -4,8 +4,7 @@ export const ME = gql`
   query Me {
     me{
       id
-      username
-      
+      username 
     }
   }
 `;
@@ -16,6 +15,8 @@ export const TASKS = gql`
       id
       title
       description
+      createdAt
+      status
       author {
         id
         username

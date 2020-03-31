@@ -11,12 +11,13 @@ export const AddTaskCard = () => {
 
   return (
     <>
-      <Col span={6} style={{ padding: "10px" }}>
-        <Card className="add-task-container" onClick={() => setModalVisible(true)}>
-          <PlusCircleTwoTone style={{ fontSize: "35px", color: "#08c" }} />
-          <Title level={4}>Add Task</Title>
-        </Card>
-      </Col>
+      <Card
+        className="add-task-container"
+        onClick={() => setModalVisible(true)}
+      >
+        <PlusCircleTwoTone style={{ fontSize: "35px", color: "#08c" }} />
+        <Title level={4}>Add Task</Title>
+      </Card>
       <AddTaskModal
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}

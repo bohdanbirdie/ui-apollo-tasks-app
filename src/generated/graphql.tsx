@@ -16,6 +16,11 @@ export interface Scalars {
 }
 
 
+export interface ChangeTaskStatusInput {
+  taskId: Scalars['Int'];
+  status: TaskStatus;
+}
+
 export interface LocalAuthPayload {
   username: Scalars['String'];
   password: Scalars['String'];
@@ -24,6 +29,7 @@ export interface LocalAuthPayload {
 export interface Mutation {
    __typename?: 'Mutation';
   addTask: Task;
+  changeTaskStatus: Task;
   login: UserLoginSuccess;
   logout?: Maybe<Scalars['Boolean']>;
   removeTask: Scalars['Int'];
@@ -35,6 +41,11 @@ export interface Mutation {
 
 export interface MutationAddTaskArgs {
   newTaskData: NewTaskInput;
+}
+
+
+export interface MutationChangeTaskStatusArgs {
+  changeTaskStatusInput: ChangeTaskStatusInput;
 }
 
 
@@ -72,9 +83,16 @@ export interface NewTaskInput {
   description?: Maybe<Scalars['String']>;
 }
 
+export interface Profile {
+   __typename?: 'Profile';
+  id: Scalars['Int'];
+  username: Scalars['String'];
+}
+
 export interface Query {
    __typename?: 'Query';
   me: User;
+  profiles: Array<Profile>;
   session?: Maybe<Scalars['String']>;
   sharedTasks: Array<Task>;
   task: Task;
@@ -94,14 +112,26 @@ export interface ShareTaskInput {
 export interface Task {
    __typename?: 'Task';
   id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   author: User;
+  status: TaskStatus;
+}
+
+export enum TaskStatus {
+  READY = 'READY',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+  REJECTED = 'REJECTED'
 }
 
 export interface User {
    __typename?: 'User';
   id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   username: Scalars['String'];
   tasks: Array<Task>;
 }
@@ -109,6 +139,8 @@ export interface User {
 export interface UserLoginSuccess {
    __typename?: 'UserLoginSuccess';
   id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   username: Scalars['String'];
   tasks: Array<Task>;
   access_token: Scalars['String'];
@@ -168,6 +200,23 @@ export type SignupMutation = (
   ) }
 );
 
+export type ChangeTaskStatusMutationVariables = {
+  changeTaskStatusInput: ChangeTaskStatusInput;
+};
+
+
+export type ChangeTaskStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { changeTaskStatus: (
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  ) }
+);
+
 export type CreateTaskMutationVariables = {
   newTaskData: NewTaskInput;
 };
@@ -177,7 +226,7 @@ export type CreateTaskMutation = (
   { __typename?: 'Mutation' }
   & { addTask: (
     { __typename?: 'Task' }
-    & Pick<Task, 'id' | 'title' | 'description'>
+    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -203,7 +252,7 @@ export type GetTasksQuery = (
   { __typename?: 'Query' }
   & { tasks: Array<(
     { __typename?: 'Task' }
-    & Pick<Task, 'id' | 'title' | 'description'>
+    & Pick<Task, 'id' | 'title' | 'description' | 'createdAt' | 'status'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -455,12 +504,71 @@ export function useSignupMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = ApolloReactCommon.MutationResult<SignupMutation>;
 export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const ChangeTaskStatusDocument = gql`
+    mutation ChangeTaskStatus($changeTaskStatusInput: ChangeTaskStatusInput!) {
+  changeTaskStatus(changeTaskStatusInput: $changeTaskStatusInput) {
+    id
+    title
+    description
+    status
+    createdAt
+    author {
+      id
+      username
+    }
+  }
+}
+    `;
+export type ChangeTaskStatusMutationFn = ApolloReactCommon.MutationFunction<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>;
+export type ChangeTaskStatusComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>, 'mutation'>;
+
+    export const ChangeTaskStatusComponent = (props: ChangeTaskStatusComponentProps) => (
+      <ApolloReactComponents.Mutation<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables> mutation={ChangeTaskStatusDocument} {...props} />
+    );
+    
+export type ChangeTaskStatusProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables> & TChildProps;
+export function withChangeTaskStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ChangeTaskStatusMutation,
+  ChangeTaskStatusMutationVariables,
+  ChangeTaskStatusProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables, ChangeTaskStatusProps<TChildProps>>(ChangeTaskStatusDocument, {
+      alias: 'changeTaskStatus',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useChangeTaskStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeTaskStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeTaskStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeTaskStatusMutation, { data, loading, error }] = useChangeTaskStatusMutation({
+ *   variables: {
+ *      changeTaskStatusInput: // value for 'changeTaskStatusInput'
+ *   },
+ * });
+ */
+export function useChangeTaskStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>(ChangeTaskStatusDocument, baseOptions);
+      }
+export type ChangeTaskStatusMutationHookResult = ReturnType<typeof useChangeTaskStatusMutation>;
+export type ChangeTaskStatusMutationResult = ApolloReactCommon.MutationResult<ChangeTaskStatusMutation>;
+export type ChangeTaskStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>;
 export const CreateTaskDocument = gql`
     mutation CreateTask($newTaskData: NewTaskInput!) {
   addTask(newTaskData: $newTaskData) {
     id
     title
     description
+    status
+    createdAt
     author {
       id
       username
@@ -566,6 +674,8 @@ export const GetTasksDocument = gql`
     id
     title
     description
+    createdAt
+    status
     author {
       id
       username

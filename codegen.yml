@@ -12,3 +12,5 @@ generates:
       withHooks: true
       withMutationFn: true
       declarationKind: 'interface'
+      namingConvention:
+        enumValues: upper-case#upperCase

@@ -20,12 +20,30 @@ export const SIGNUP = gql`
   }
 `;
 
+export const CHANGE_TASK_STATUS = gql`
+  mutation ChangeTaskStatus($changeTaskStatusInput: ChangeTaskStatusInput!) {
+    changeTaskStatus(changeTaskStatusInput: $changeTaskStatusInput) {
+      id
+      title
+      description
+      status
+      createdAt
+      author {
+        id
+        username
+      }
+    }
+  }
+`;
+
 export const CREATE_TASK = gql`
   mutation CreateTask($newTaskData: NewTaskInput!) {
     addTask(newTaskData: $newTaskData) {
       id
       title
       description
+      status
+      createdAt
       author {
         id
         username
