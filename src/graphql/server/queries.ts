@@ -51,3 +51,18 @@ const SHARED_TASKS = gql`
     }
   }
 `
+
+const TASK_EVENTS = gql`
+  query GetTaskEvents($taskId: Int!) {
+    taskEvents(taskId: $taskId) {
+      id
+      createdAt
+      taskId
+      status
+      user {
+        id
+        username
+      }
+    }
+  }
+`

@@ -37,6 +37,23 @@ export const CHANGE_TASK_STATUS = gql`
   }
 `;
 
+export const UPDATE_TASK_DETAILS = gql`
+  mutation UpdateTaskDetails($taskDetails: UpdateTaskDetails!) {
+    updateTaskDetails(taskDetails: $taskDetails) {
+      id
+      title
+      description
+      status
+      createdAt
+      updatedAt
+      author {
+        id
+        username
+      }
+    }
+  }
+`;
+
 export const CREATE_TASK = gql`
   mutation CreateTask($newTaskData: NewTaskInput!) {
     addTask(newTaskData: $newTaskData) {
@@ -53,3 +70,12 @@ export const CREATE_TASK = gql`
     }
   }
 `;
+
+export const SHARE_TASK = gql`
+  mutation ShareTask($shareTaskInput: ShareTaskInput!) {
+    shareTask(shareTaskInput: $shareTaskInput) {
+      id
+    }
+  }
+`;
+

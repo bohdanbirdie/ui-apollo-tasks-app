@@ -36,6 +36,7 @@ export interface Mutation {
   setSession?: Maybe<Scalars['Boolean']>;
   shareTask: Task;
   signup: UserLoginSuccess;
+  updateTaskDetails: Task;
 }
 
 
@@ -78,6 +79,11 @@ export interface MutationSignupArgs {
   localAuthPayload: LocalAuthPayload;
 }
 
+
+export interface MutationUpdateTaskDetailsArgs {
+  taskDetails: UpdateTaskDetails;
+}
+
 export interface NewTaskInput {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -96,12 +102,18 @@ export interface Query {
   session?: Maybe<Scalars['String']>;
   sharedTasks: Array<Task>;
   task: Task;
+  taskEvents: Array<TaskStatusHistoryEvent>;
   tasks: Array<Task>;
 }
 
 
 export interface QueryTaskArgs {
   id: Scalars['Int'];
+}
+
+
+export interface QueryTaskEventsArgs {
+  taskId: Scalars['Int'];
 }
 
 export interface ShareTaskInput {
@@ -118,6 +130,7 @@ export interface Task {
   description?: Maybe<Scalars['String']>;
   author: User;
   status: TaskStatus;
+  user: User;
 }
 
 export enum TaskStatus {
@@ -125,6 +138,23 @@ export enum TaskStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   DONE = 'DONE',
   REJECTED = 'REJECTED'
+}
+
+export interface TaskStatusHistoryEvent {
+   __typename?: 'TaskStatusHistoryEvent';
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  status: TaskStatus;
+  user: User;
+}
+
+export interface UpdateTaskDetails {
+  taskId: Scalars['Int'];
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
 }
 
 export interface User {
@@ -217,6 +247,23 @@ export type ChangeTaskStatusMutation = (
   ) }
 );
 
+export type UpdateTaskDetailsMutationVariables = {
+  taskDetails: UpdateTaskDetails;
+};
+
+
+export type UpdateTaskDetailsMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTaskDetails: (
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt' | 'updatedAt'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  ) }
+);
+
 export type CreateTaskMutationVariables = {
   newTaskData: NewTaskInput;
 };
@@ -231,6 +278,19 @@ export type CreateTaskMutation = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
+  ) }
+);
+
+export type ShareTaskMutationVariables = {
+  shareTaskInput: ShareTaskInput;
+};
+
+
+export type ShareTaskMutation = (
+  { __typename?: 'Mutation' }
+  & { shareTask: (
+    { __typename?: 'Task' }
+    & Pick<Task, 'id'>
   ) }
 );
 
@@ -280,6 +340,23 @@ export type GetSharedTasksQuery = (
     { __typename?: 'Task' }
     & Pick<Task, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'status'>
     & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
+);
+
+export type GetTaskEventsQueryVariables = {
+  taskId: Scalars['Int'];
+};
+
+
+export type GetTaskEventsQuery = (
+  { __typename?: 'Query' }
+  & { taskEvents: Array<(
+    { __typename?: 'TaskStatusHistoryEvent' }
+    & Pick<TaskStatusHistoryEvent, 'id' | 'createdAt' | 'taskId' | 'status'>
+    & { user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -588,6 +665,64 @@ export function useChangeTaskStatusMutation(baseOptions?: ApolloReactHooks.Mutat
 export type ChangeTaskStatusMutationHookResult = ReturnType<typeof useChangeTaskStatusMutation>;
 export type ChangeTaskStatusMutationResult = ApolloReactCommon.MutationResult<ChangeTaskStatusMutation>;
 export type ChangeTaskStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeTaskStatusMutation, ChangeTaskStatusMutationVariables>;
+export const UpdateTaskDetailsDocument = gql`
+    mutation UpdateTaskDetails($taskDetails: UpdateTaskDetails!) {
+  updateTaskDetails(taskDetails: $taskDetails) {
+    id
+    title
+    description
+    status
+    createdAt
+    updatedAt
+    author {
+      id
+      username
+    }
+  }
+}
+    `;
+export type UpdateTaskDetailsMutationFn = ApolloReactCommon.MutationFunction<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables>;
+export type UpdateTaskDetailsComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables>, 'mutation'>;
+
+    export const UpdateTaskDetailsComponent = (props: UpdateTaskDetailsComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables> mutation={UpdateTaskDetailsDocument} {...props} />
+    );
+    
+export type UpdateTaskDetailsProps<TChildProps = {}> = ApolloReactHoc.MutateProps<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables> & TChildProps;
+export function withUpdateTaskDetails<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateTaskDetailsMutation,
+  UpdateTaskDetailsMutationVariables,
+  UpdateTaskDetailsProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables, UpdateTaskDetailsProps<TChildProps>>(UpdateTaskDetailsDocument, {
+      alias: 'updateTaskDetails',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateTaskDetailsMutation__
+ *
+ * To run a mutation, you first call `useUpdateTaskDetailsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTaskDetailsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTaskDetailsMutation, { data, loading, error }] = useUpdateTaskDetailsMutation({
+ *   variables: {
+ *      taskDetails: // value for 'taskDetails'
+ *   },
+ * });
+ */
+export function useUpdateTaskDetailsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables>(UpdateTaskDetailsDocument, baseOptions);
+      }
+export type UpdateTaskDetailsMutationHookResult = ReturnType<typeof useUpdateTaskDetailsMutation>;
+export type UpdateTaskDetailsMutationResult = ApolloReactCommon.MutationResult<UpdateTaskDetailsMutation>;
+export type UpdateTaskDetailsMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTaskDetailsMutation, UpdateTaskDetailsMutationVariables>;
 export const CreateTaskDocument = gql`
     mutation CreateTask($newTaskData: NewTaskInput!) {
   addTask(newTaskData: $newTaskData) {
@@ -646,6 +781,55 @@ export function useCreateTaskMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type CreateTaskMutationHookResult = ReturnType<typeof useCreateTaskMutation>;
 export type CreateTaskMutationResult = ApolloReactCommon.MutationResult<CreateTaskMutation>;
 export type CreateTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
+export const ShareTaskDocument = gql`
+    mutation ShareTask($shareTaskInput: ShareTaskInput!) {
+  shareTask(shareTaskInput: $shareTaskInput) {
+    id
+  }
+}
+    `;
+export type ShareTaskMutationFn = ApolloReactCommon.MutationFunction<ShareTaskMutation, ShareTaskMutationVariables>;
+export type ShareTaskComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ShareTaskMutation, ShareTaskMutationVariables>, 'mutation'>;
+
+    export const ShareTaskComponent = (props: ShareTaskComponentProps) => (
+      <ApolloReactComponents.Mutation<ShareTaskMutation, ShareTaskMutationVariables> mutation={ShareTaskDocument} {...props} />
+    );
+    
+export type ShareTaskProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ShareTaskMutation, ShareTaskMutationVariables> & TChildProps;
+export function withShareTask<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ShareTaskMutation,
+  ShareTaskMutationVariables,
+  ShareTaskProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ShareTaskMutation, ShareTaskMutationVariables, ShareTaskProps<TChildProps>>(ShareTaskDocument, {
+      alias: 'shareTask',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useShareTaskMutation__
+ *
+ * To run a mutation, you first call `useShareTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useShareTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [shareTaskMutation, { data, loading, error }] = useShareTaskMutation({
+ *   variables: {
+ *      shareTaskInput: // value for 'shareTaskInput'
+ *   },
+ * });
+ */
+export function useShareTaskMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ShareTaskMutation, ShareTaskMutationVariables>) {
+        return ApolloReactHooks.useMutation<ShareTaskMutation, ShareTaskMutationVariables>(ShareTaskDocument, baseOptions);
+      }
+export type ShareTaskMutationHookResult = ReturnType<typeof useShareTaskMutation>;
+export type ShareTaskMutationResult = ApolloReactCommon.MutationResult<ShareTaskMutation>;
+export type ShareTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<ShareTaskMutation, ShareTaskMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -862,3 +1046,60 @@ export function useGetSharedTasksLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetSharedTasksQueryHookResult = ReturnType<typeof useGetSharedTasksQuery>;
 export type GetSharedTasksLazyQueryHookResult = ReturnType<typeof useGetSharedTasksLazyQuery>;
 export type GetSharedTasksQueryResult = ApolloReactCommon.QueryResult<GetSharedTasksQuery, GetSharedTasksQueryVariables>;
+export const GetTaskEventsDocument = gql`
+    query GetTaskEvents($taskId: Int!) {
+  taskEvents(taskId: $taskId) {
+    id
+    createdAt
+    taskId
+    status
+    user {
+      id
+      username
+    }
+  }
+}
+    `;
+export type GetTaskEventsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetTaskEventsQuery, GetTaskEventsQueryVariables>, 'query'> & ({ variables: GetTaskEventsQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const GetTaskEventsComponent = (props: GetTaskEventsComponentProps) => (
+      <ApolloReactComponents.Query<GetTaskEventsQuery, GetTaskEventsQueryVariables> query={GetTaskEventsDocument} {...props} />
+    );
+    
+export type GetTaskEventsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetTaskEventsQuery, GetTaskEventsQueryVariables> & TChildProps;
+export function withGetTaskEvents<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetTaskEventsQuery,
+  GetTaskEventsQueryVariables,
+  GetTaskEventsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetTaskEventsQuery, GetTaskEventsQueryVariables, GetTaskEventsProps<TChildProps>>(GetTaskEventsDocument, {
+      alias: 'getTaskEvents',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetTaskEventsQuery__
+ *
+ * To run a query within a React component, call `useGetTaskEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTaskEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTaskEventsQuery({
+ *   variables: {
+ *      taskId: // value for 'taskId'
+ *   },
+ * });
+ */
+export function useGetTaskEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTaskEventsQuery, GetTaskEventsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTaskEventsQuery, GetTaskEventsQueryVariables>(GetTaskEventsDocument, baseOptions);
+      }
+export function useGetTaskEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTaskEventsQuery, GetTaskEventsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTaskEventsQuery, GetTaskEventsQueryVariables>(GetTaskEventsDocument, baseOptions);
+        }
+export type GetTaskEventsQueryHookResult = ReturnType<typeof useGetTaskEventsQuery>;
+export type GetTaskEventsLazyQueryHookResult = ReturnType<typeof useGetTaskEventsLazyQuery>;
+export type GetTaskEventsQueryResult = ApolloReactCommon.QueryResult<GetTaskEventsQuery, GetTaskEventsQueryVariables>;

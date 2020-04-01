@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import {
   TaskStatus,
-  Task,
-  useChangeTaskStatusMutation
+  useChangeTaskStatusMutation,
+  GetTaskEventsDocument
 } from "../../generated/graphql";
 import { Tag, Popover, Spin, Result, Alert } from "antd";
 import { ApolloError } from "apollo-boost";
@@ -23,8 +23,10 @@ const titleMap: { [key in TaskStatus]: string } = {
 };
 
 export const TaskTag: React.FC<{
-  task: Task;
-}> = ({ task }) => {
+  taskId: number;
+  status: TaskStatus;
+  clickable?: boolean;
+}> = ({ taskId, status, clickable }) => {
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [error, setError] = useState<ApolloError | null>(null);
   const [changeTaskStatusMutation, { loading }] = useChangeTaskStatusMutation();
@@ -35,9 +37,10 @@ export const TaskTag: React.FC<{
   ) => {
     return (
       <Tag
-        style={{ width: "100%", cursor: 'pointer' }}
+        style={clickable ? { cursor: "pointer" } : {}}
         color={colorMap[key]}
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation();
           onChangeSelect && onChangeSelect(key);
         }}
       >
@@ -58,10 +61,10 @@ export const TaskTag: React.FC<{
             onClose={() => setError(null)}
           />
         ) : (
-          <Spin tip="Loading..." spinning={loading}>
+          <Spin tip="Loading..." spinning={loading} delay={200}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               {Object.keys(colorMap)
-                .filter(key => key !== task.status)
+                .filter(key => key !== status)
                 .map(key => (
                   <div style={{ margin: "5px" }} key={key}>
                     {renderTag(key as TaskStatus, async status => {
@@ -69,10 +72,11 @@ export const TaskTag: React.FC<{
                         const result = await changeTaskStatusMutation({
                           variables: {
                             changeTaskStatusInput: {
-                              taskId: task.id,
+                              taskId: taskId,
                               status
-                            }
-                          }
+                            },
+                          },
+                          refetchQueries: [{ query: GetTaskEventsDocument, variables: { taskId }}]
                         });
 
                         if (!result?.errors) {
@@ -90,11 +94,15 @@ export const TaskTag: React.FC<{
       }
       title="Change status"
       trigger="click"
-      visible={popoverVisible}
+      visible={popoverVisible && clickable}
       onVisibleChange={setPopoverVisible}
       placement="bottomRight"
     >
-      {renderTag(task.status)}
+      {renderTag(status)}
     </Popover>
   );
+};
+
+TaskTag.defaultProps = {
+  clickable: true
 };
