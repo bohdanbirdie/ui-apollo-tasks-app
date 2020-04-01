@@ -18,7 +18,7 @@ cache.writeData({
 });
 
 const httpLink = createHttpLink({
-  uri: "http://5f98598f.ngrok.io/graphql"
+  uri: "https://apple-cake-68011.herokuapp.com/graphql"
 });
 
 const authLink = setContext((_, { headers }) => ({
