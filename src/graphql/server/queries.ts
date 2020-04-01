@@ -16,6 +16,33 @@ export const TASKS = gql`
       title
       description
       createdAt
+      updatedAt
+      status
+      author {
+        id
+        username
+      }
+    }
+  }
+`
+
+const PROFILES = gql`
+  query GetProfiles {
+    profiles {
+      id
+      username
+    }
+  }
+`
+
+const SHARED_TASKS = gql`
+  query GetSharedTasks {
+    sharedTasks {
+      id
+      title
+      description
+      createdAt
+      updatedAt
       status
       author {
         id

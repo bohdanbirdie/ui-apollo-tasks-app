@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col } from "antd";
 import QueueAnim from "rc-queue-anim";
+
 import { useGetTasksQuery, Task } from "../../generated/graphql";
 import { TaskCard } from "../task-card/TaskCard";
 import { AddTaskCard } from "../add-task-card/AddTaskCard";

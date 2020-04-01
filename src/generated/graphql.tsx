@@ -209,7 +209,7 @@ export type ChangeTaskStatusMutation = (
   { __typename?: 'Mutation' }
   & { changeTaskStatus: (
     { __typename?: 'Task' }
-    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt'>
+    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt' | 'updatedAt'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -226,7 +226,7 @@ export type CreateTaskMutation = (
   { __typename?: 'Mutation' }
   & { addTask: (
     { __typename?: 'Task' }
-    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt'>
+    & Pick<Task, 'id' | 'title' | 'description' | 'status' | 'createdAt' | 'updatedAt'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -252,7 +252,33 @@ export type GetTasksQuery = (
   { __typename?: 'Query' }
   & { tasks: Array<(
     { __typename?: 'Task' }
-    & Pick<Task, 'id' | 'title' | 'description' | 'createdAt' | 'status'>
+    & Pick<Task, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'status'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
+);
+
+export type GetProfilesQueryVariables = {};
+
+
+export type GetProfilesQuery = (
+  { __typename?: 'Query' }
+  & { profiles: Array<(
+    { __typename?: 'Profile' }
+    & Pick<Profile, 'id' | 'username'>
+  )> }
+);
+
+export type GetSharedTasksQueryVariables = {};
+
+
+export type GetSharedTasksQuery = (
+  { __typename?: 'Query' }
+  & { sharedTasks: Array<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'status'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -512,6 +538,7 @@ export const ChangeTaskStatusDocument = gql`
     description
     status
     createdAt
+    updatedAt
     author {
       id
       username
@@ -569,6 +596,7 @@ export const CreateTaskDocument = gql`
     description
     status
     createdAt
+    updatedAt
     author {
       id
       username
@@ -675,6 +703,7 @@ export const GetTasksDocument = gql`
     title
     description
     createdAt
+    updatedAt
     status
     author {
       id
@@ -725,3 +754,111 @@ export function useGetTasksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetTasksQueryHookResult = ReturnType<typeof useGetTasksQuery>;
 export type GetTasksLazyQueryHookResult = ReturnType<typeof useGetTasksLazyQuery>;
 export type GetTasksQueryResult = ApolloReactCommon.QueryResult<GetTasksQuery, GetTasksQueryVariables>;
+export const GetProfilesDocument = gql`
+    query GetProfiles {
+  profiles {
+    id
+    username
+  }
+}
+    `;
+export type GetProfilesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetProfilesQuery, GetProfilesQueryVariables>, 'query'>;
+
+    export const GetProfilesComponent = (props: GetProfilesComponentProps) => (
+      <ApolloReactComponents.Query<GetProfilesQuery, GetProfilesQueryVariables> query={GetProfilesDocument} {...props} />
+    );
+    
+export type GetProfilesProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetProfilesQuery, GetProfilesQueryVariables> & TChildProps;
+export function withGetProfiles<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetProfilesQuery,
+  GetProfilesQueryVariables,
+  GetProfilesProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetProfilesQuery, GetProfilesQueryVariables, GetProfilesProps<TChildProps>>(GetProfilesDocument, {
+      alias: 'getProfiles',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetProfilesQuery__
+ *
+ * To run a query within a React component, call `useGetProfilesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfilesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfilesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetProfilesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetProfilesQuery, GetProfilesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetProfilesQuery, GetProfilesQueryVariables>(GetProfilesDocument, baseOptions);
+      }
+export function useGetProfilesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetProfilesQuery, GetProfilesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetProfilesQuery, GetProfilesQueryVariables>(GetProfilesDocument, baseOptions);
+        }
+export type GetProfilesQueryHookResult = ReturnType<typeof useGetProfilesQuery>;
+export type GetProfilesLazyQueryHookResult = ReturnType<typeof useGetProfilesLazyQuery>;
+export type GetProfilesQueryResult = ApolloReactCommon.QueryResult<GetProfilesQuery, GetProfilesQueryVariables>;
+export const GetSharedTasksDocument = gql`
+    query GetSharedTasks {
+  sharedTasks {
+    id
+    title
+    description
+    createdAt
+    updatedAt
+    status
+    author {
+      id
+      username
+    }
+  }
+}
+    `;
+export type GetSharedTasksComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetSharedTasksQuery, GetSharedTasksQueryVariables>, 'query'>;
+
+    export const GetSharedTasksComponent = (props: GetSharedTasksComponentProps) => (
+      <ApolloReactComponents.Query<GetSharedTasksQuery, GetSharedTasksQueryVariables> query={GetSharedTasksDocument} {...props} />
+    );
+    
+export type GetSharedTasksProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetSharedTasksQuery, GetSharedTasksQueryVariables> & TChildProps;
+export function withGetSharedTasks<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetSharedTasksQuery,
+  GetSharedTasksQueryVariables,
+  GetSharedTasksProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetSharedTasksQuery, GetSharedTasksQueryVariables, GetSharedTasksProps<TChildProps>>(GetSharedTasksDocument, {
+      alias: 'getSharedTasks',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetSharedTasksQuery__
+ *
+ * To run a query within a React component, call `useGetSharedTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSharedTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSharedTasksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSharedTasksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSharedTasksQuery, GetSharedTasksQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSharedTasksQuery, GetSharedTasksQueryVariables>(GetSharedTasksDocument, baseOptions);
+      }
+export function useGetSharedTasksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSharedTasksQuery, GetSharedTasksQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSharedTasksQuery, GetSharedTasksQueryVariables>(GetSharedTasksDocument, baseOptions);
+        }
+export type GetSharedTasksQueryHookResult = ReturnType<typeof useGetSharedTasksQuery>;
+export type GetSharedTasksLazyQueryHookResult = ReturnType<typeof useGetSharedTasksLazyQuery>;
+export type GetSharedTasksQueryResult = ApolloReactCommon.QueryResult<GetSharedTasksQuery, GetSharedTasksQueryVariables>;

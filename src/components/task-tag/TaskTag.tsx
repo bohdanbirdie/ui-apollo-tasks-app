@@ -35,7 +35,7 @@ export const TaskTag: React.FC<{
   ) => {
     return (
       <Tag
-        style={{ width: "100%" }}
+        style={{ width: "100%", cursor: 'pointer' }}
         color={colorMap[key]}
         onClick={() => {
           onChangeSelect && onChangeSelect(key);

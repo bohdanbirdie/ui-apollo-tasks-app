@@ -15,13 +15,19 @@ export const withLayout = <P extends object>(Component: ComponentType<P>) => (
   const [logoutMutation] = useLogoutMutation();
 
   return (
-    <AntdLayout className="layout" style={{ height: "100vh" }}>
+    <AntdLayout className="layout" style={{ minHeight: "100vh" }}>
       <Header>
         <UserHeader />
         <Menu theme="dark" mode="horizontal" selectedKeys={[location.pathname]}>
           <Menu.Item key="/" style={{ float: "left" }}>
             <NavLink to="/" className="nav-text">
               My tasks
+            </NavLink>
+          </Menu.Item>
+
+          <Menu.Item key="/shared-tasks" style={{ float: "left" }}>
+            <NavLink to="/shared-tasks" className="nav-text">
+              Shared Tasks
             </NavLink>
           </Menu.Item>
 

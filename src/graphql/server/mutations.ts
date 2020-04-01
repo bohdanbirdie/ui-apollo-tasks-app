@@ -28,6 +28,7 @@ export const CHANGE_TASK_STATUS = gql`
       description
       status
       createdAt
+      updatedAt
       author {
         id
         username
@@ -44,6 +45,7 @@ export const CREATE_TASK = gql`
       description
       status
       createdAt
+      updatedAt
       author {
         id
         username
