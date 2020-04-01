@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ui-apollo-tasks-app/precache-manifest.7113cce72eb27cf81b58c9d0c4e993d4.js"
+  "/ui-apollo-tasks-app/precache-manifest.8202b728851a9adf5a51a36c81de2fa5.js"
 );
 
 self.addEventListener('message', (event) => {

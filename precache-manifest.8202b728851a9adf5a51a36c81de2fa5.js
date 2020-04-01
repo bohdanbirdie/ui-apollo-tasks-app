@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "dd0a2553f133238b7c8d4a04370ba880",
+    "revision": "7ecabfe91606239445f2c8aed98e5d7a",
     "url": "/ui-apollo-tasks-app/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ui-apollo-tasks-app/static/css/2.ad8fe80d.chunk.css"
   },
   {
-    "revision": "35b5dac71889b7e51bab",
+    "revision": "636047b1f73ccff9fdc6",
     "url": "/ui-apollo-tasks-app/static/css/main.92324744.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ui-apollo-tasks-app/static/js/2.a6d86edb.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "35b5dac71889b7e51bab",
-    "url": "/ui-apollo-tasks-app/static/js/main.ca35f1ae.chunk.js"
+    "revision": "636047b1f73ccff9fdc6",
+    "url": "/ui-apollo-tasks-app/static/js/main.d091a292.chunk.js"
   },
   {
     "revision": "4dc60596af721e20de91",
