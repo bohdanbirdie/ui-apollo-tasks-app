@@ -18,7 +18,7 @@ cache.writeData({
 });
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/graphql"
+  uri: "http://5f98598f.ngrok.io/graphql"
 });
 
 const authLink = setContext((_, { headers }) => ({

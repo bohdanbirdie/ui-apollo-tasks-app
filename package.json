@@ -2,6 +2,7 @@
   "name": "ui-apollo-tasks-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://bohdanbirdie.github.io/ui-apollo-tasks-app",
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
     "@apollo/link-error": "^2.0.0-beta.3",
@@ -40,7 +41,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,6 +65,7 @@
     "@graphql-codegen/introspection": "1.13.1",
     "@graphql-codegen/typescript": "1.13.1",
     "@graphql-codegen/typescript-operations": "1.13.1",
-    "@graphql-codegen/typescript-react-apollo": "1.13.1"
+    "@graphql-codegen/typescript-react-apollo": "1.13.1",
+    "gh-pages": "^2.2.0"
   }
 }
