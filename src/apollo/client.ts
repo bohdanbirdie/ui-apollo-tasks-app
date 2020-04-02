@@ -1,4 +1,3 @@
-import { LOGOUT } from './../graphql/client/cache';
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
@@ -8,6 +7,7 @@ import { ApolloLink } from 'apollo-link';
 
 import { SyncStorage } from "../services/SyncStorage";
 import { SessionMutations } from "../graphql/client/cache";
+import { LOGOUT } from './../graphql/client/cache';
 
 const cache = new InMemoryCache();
 

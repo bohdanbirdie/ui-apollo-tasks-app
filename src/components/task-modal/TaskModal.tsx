@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { Typography, Modal, Spin, Alert, Button, Row, Col, Space } from "antd";
 import Meta from "antd/lib/card/Meta";
 
@@ -13,6 +12,7 @@ import { descriptionFallback } from "../task-card/TaskCard";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { ShareTaskTag } from "../share-task-tag/ShareTaskTag";
 import { TasksEventsTimeline } from "../tasks-events-timeline/TasksEventsTimeline";
+import { formatDistanceToNowDateString } from "../../helpers/time-helpers";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -106,7 +106,7 @@ export const TaskModal: React.FC<{
       }
       footer={[
         <Text type="secondary" style={{ float: "left", margin: "5px" }}>
-          Updated {formatDistanceToNow(new Date(+task.updatedAt))}
+          Updated {formatDistanceToNowDateString(task.updatedAt)}
         </Text>,
         <Button key="cancel" onClick={onCancel} disabled={loading}>
           Cancel

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { Tag, Popover, Spin, Alert } from "antd";
+import { ApolloError } from "apollo-boost";
+import { EditTwoTone } from "@ant-design/icons";
 
 import {
   TaskStatus,
   useChangeTaskStatusMutation,
   GetTaskEventsDocument
 } from "../../generated/graphql";
-import { Tag, Popover, Spin, Result, Alert } from "antd";
-import { ApolloError } from "apollo-boost";
 
 const colorMap: { [key in TaskStatus]: string } = {
   [TaskStatus.READY]: "default",
@@ -16,10 +17,10 @@ const colorMap: { [key in TaskStatus]: string } = {
 };
 
 const titleMap: { [key in TaskStatus]: string } = {
-  [TaskStatus.READY]: "Ready",
-  [TaskStatus.IN_PROGRESS]: "In Progress",
-  [TaskStatus.DONE]: "Done",
-  [TaskStatus.REJECTED]: "Rejected"
+  [TaskStatus.READY]: "Status: Ready",
+  [TaskStatus.IN_PROGRESS]: "Status: In Progress",
+  [TaskStatus.DONE]: "Status: Done",
+  [TaskStatus.REJECTED]: "Status: Rejected"
 };
 
 export const TaskTag: React.FC<{
@@ -33,12 +34,14 @@ export const TaskTag: React.FC<{
 
   const renderTag = (
     key: TaskStatus,
-    onChangeSelect?: (status: TaskStatus) => void
+    icon: boolean,
+    onChangeSelect?: (status: TaskStatus) => void,
   ) => {
     return (
       <Tag
         style={clickable ? { cursor: "pointer" } : {}}
         color={colorMap[key]}
+        icon={icon && <EditTwoTone />}
         onClick={e => {
           e.stopPropagation();
           onChangeSelect && onChangeSelect(key);
@@ -67,16 +70,21 @@ export const TaskTag: React.FC<{
                 .filter(key => key !== status)
                 .map(key => (
                   <div style={{ margin: "5px" }} key={key}>
-                    {renderTag(key as TaskStatus, async status => {
+                    {renderTag(key as TaskStatus, false, async status => {
                       try {
                         const result = await changeTaskStatusMutation({
                           variables: {
                             changeTaskStatusInput: {
                               taskId: taskId,
                               status
-                            },
+                            }
                           },
-                          refetchQueries: [{ query: GetTaskEventsDocument, variables: { taskId }}]
+                          refetchQueries: [
+                            {
+                              query: GetTaskEventsDocument,
+                              variables: { taskId }
+                            }
+                          ]
                         });
 
                         if (!result?.errors) {
@@ -98,7 +106,7 @@ export const TaskTag: React.FC<{
       onVisibleChange={setPopoverVisible}
       placement="bottomRight"
     >
-      {renderTag(status)}
+      {renderTag(status, !!clickable)}
     </Popover>
   );
 };

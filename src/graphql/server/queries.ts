@@ -26,7 +26,7 @@ export const TASKS = gql`
   }
 `
 
-const PROFILES = gql`
+export const PROFILES = gql`
   query GetProfiles {
     profiles {
       id
@@ -35,7 +35,7 @@ const PROFILES = gql`
   }
 `
 
-const SHARED_TASKS = gql`
+export const SHARED_TASKS = gql`
   query GetSharedTasks {
     sharedTasks {
       id
@@ -52,7 +52,7 @@ const SHARED_TASKS = gql`
   }
 `
 
-const TASK_EVENTS = gql`
+export const TASK_EVENTS = gql`
   query GetTaskEvents($taskId: Int!) {
     taskEvents(taskId: $taskId) {
       id

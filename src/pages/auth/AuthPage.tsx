@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Form,
   Input,
@@ -20,7 +21,6 @@ import {
   useGetSessionQuery
 } from "../../generated/graphql";
 import { useQueryParams } from "../../hooks/use-query-params";
-import { useHistory } from "react-router-dom";
 
 const { Content } = AntdLayout;
 

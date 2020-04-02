@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect, Route, useRouteMatch } from "react-router-dom";
+
 import { useGetSessionQuery } from "../../generated/graphql";
 
 export const ProtectedRoute = ({ children, ...rest }: any) => {

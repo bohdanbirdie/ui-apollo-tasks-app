@@ -1,4 +1,5 @@
 import { gql, InMemoryCache, Resolver } from "apollo-boost";
+
 import { SyncStorage } from "../../services/SyncStorage";
 import { client } from "../../apollo/client";
 

@@ -2,9 +2,10 @@ import React, { ReactElement, ComponentType } from "react";
 import { Layout as AntdLayout, Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 
-import "./Layout.css";
 import { useLogoutMutation } from "../../generated/graphql";
 import { UserHeader } from "../user-header/UserHeader";
+
+import "./Layout.css";
 
 const { Header, Content } = AntdLayout;
 

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { Card, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
 
 import { Task } from "../../generated/graphql";
 import { TaskTag } from "../task-tag/TaskTag";
 import { TaskModal } from "../task-modal/TaskModal";
+import { formatDistanceToNowDateString } from "../../helpers/time-helpers";
 
 const { Paragraph, Text } = Typography;
 
@@ -26,7 +26,7 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
             type="secondary"
             style={{ float: "left", padding: "0 25px", textAlign: "right" }}
           >
-            Updated {formatDistanceToNow(new Date(+task.updatedAt))}
+            Updated {formatDistanceToNowDateString(task.updatedAt)}
           </Text>
         ]}
       >

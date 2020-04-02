@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import * as serviceWorker from "./serviceWorker";
 import { client } from "./apollo/client";
@@ -12,11 +12,11 @@ import "antd/dist/antd.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ApolloProvider client={client}>
         <App />
       </ApolloProvider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

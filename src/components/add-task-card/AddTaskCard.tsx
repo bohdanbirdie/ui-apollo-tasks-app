@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Card } from "antd";
+import { Card } from "antd";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 
 import "./AddTaskCard.css";

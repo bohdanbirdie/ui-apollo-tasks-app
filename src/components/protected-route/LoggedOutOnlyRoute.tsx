@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
+
 import { useGetSessionQuery } from "../../generated/graphql";
 
 export const LoggedOutOnlyRoute = ({ children, ...rest }: any) => {
