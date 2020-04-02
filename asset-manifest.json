@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/ui-apollo-tasks-app/static/css/main.92324744.chunk.css",
-    "main.js": "/ui-apollo-tasks-app/static/js/main.d091a292.chunk.js",
-    "main.js.map": "/ui-apollo-tasks-app/static/js/main.d091a292.chunk.js.map",
+    "main.css": "/ui-apollo-tasks-app/static/css/main.67256970.chunk.css",
+    "main.js": "/ui-apollo-tasks-app/static/js/main.f2606b32.chunk.js",
+    "main.js.map": "/ui-apollo-tasks-app/static/js/main.f2606b32.chunk.js.map",
     "runtime-main.js": "/ui-apollo-tasks-app/static/js/runtime-main.2ec22418.js",
     "runtime-main.js.map": "/ui-apollo-tasks-app/static/js/runtime-main.2ec22418.js.map",
     "static/css/2.ad8fe80d.chunk.css": "/ui-apollo-tasks-app/static/css/2.ad8fe80d.chunk.css",
-    "static/js/2.a6d86edb.chunk.js": "/ui-apollo-tasks-app/static/js/2.a6d86edb.chunk.js",
-    "static/js/2.a6d86edb.chunk.js.map": "/ui-apollo-tasks-app/static/js/2.a6d86edb.chunk.js.map",
+    "static/js/2.84dba596.chunk.js": "/ui-apollo-tasks-app/static/js/2.84dba596.chunk.js",
+    "static/js/2.84dba596.chunk.js.map": "/ui-apollo-tasks-app/static/js/2.84dba596.chunk.js.map",
     "index.html": "/ui-apollo-tasks-app/index.html",
-    "precache-manifest.8202b728851a9adf5a51a36c81de2fa5.js": "/ui-apollo-tasks-app/precache-manifest.8202b728851a9adf5a51a36c81de2fa5.js",
+    "precache-manifest.e69c364799c86666a5c0b1daa99e0744.js": "/ui-apollo-tasks-app/precache-manifest.e69c364799c86666a5c0b1daa99e0744.js",
     "service-worker.js": "/ui-apollo-tasks-app/service-worker.js",
     "static/css/2.ad8fe80d.chunk.css.map": "/ui-apollo-tasks-app/static/css/2.ad8fe80d.chunk.css.map",
-    "static/css/main.92324744.chunk.css.map": "/ui-apollo-tasks-app/static/css/main.92324744.chunk.css.map",
-    "static/js/2.a6d86edb.chunk.js.LICENSE.txt": "/ui-apollo-tasks-app/static/js/2.a6d86edb.chunk.js.LICENSE.txt"
+    "static/css/main.67256970.chunk.css.map": "/ui-apollo-tasks-app/static/css/main.67256970.chunk.css.map",
+    "static/js/2.84dba596.chunk.js.LICENSE.txt": "/ui-apollo-tasks-app/static/js/2.84dba596.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2ec22418.js",
     "static/css/2.ad8fe80d.chunk.css",
-    "static/js/2.a6d86edb.chunk.js",
-    "static/css/main.92324744.chunk.css",
-    "static/js/main.d091a292.chunk.js"
+    "static/js/2.84dba596.chunk.js",
+    "static/css/main.67256970.chunk.css",
+    "static/js/main.f2606b32.chunk.js"
   ]
 }
